@@ -1,9 +1,9 @@
 name: LinkedIn Scrape and Post
 
 on:
-  workflow_dispatch:   # permite lanzarlo manualmente
+  workflow_dispatch:
   schedule:
-    - cron: '0 8 * * *'   # cada día a las 08:00 UTC
+    - cron: '0 8 * * *'
 
 jobs:
   build-and-run:
@@ -17,11 +17,14 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          python -m playwright install chromium
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install Python deps (no file)
+        run: pip install playwright requests
+
+      - name: Install Chromium for Playwright
+        run: python -m playwright install --with-deps chromium
 
       - name: Run scraper
         env:
@@ -29,5 +32,4 @@ jobs:
           MAKE_WEBHOOK: ${{ secrets.MAKE_WEBHOOK }}
           LD_PROFILE_URL: ${{ secrets.LD_PROFILE_URL }}
           MAX_POSTS: ${{ secrets.MAX_POSTS }}
-        run: |
-          python scrape_and_post.py
+        run: python scrape_and_post.py
