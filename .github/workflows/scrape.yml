@@ -25,10 +25,9 @@ jobs:
 
       - name: Run scraper
         env:
-          LI_AT: ${{AQEDAU0MVQwCJ7TwAAABmZYpWtQAAAGZujXe1FYAfn_EeZ9YPvnZKxQh7dk1lgL3ycC3ss54wyX9Fg6pai9kkMzVlMzUfTM0cnY5iBIU0vVHADwMiMPQbj3lwPL2h90Pm0bUTooE16yqhjusz2fSQuRr}}
-          MAKE_WEBHOOK: ${{https://hook.eu2.make.com/6lotf12qjo3x63judau16ufhm8qvwjjd
-}}
-          LD_PROFILE_URL: ${{https://www.linkedin.com/in/vidalmarc/}}
-          MAX_POSTS: ${{60}}
+          LI_AT: ${{ secrets.LI_AT }}
+          MAKE_WEBHOOK: ${{ secrets.MAKE_WEBHOOK }}
+          LD_PROFILE_URL: ${{ secrets.LD_PROFILE_URL }}
+          MAX_POSTS: ${{ secrets.MAX_POSTS }}
         run: |
           python scrape_and_post.py
