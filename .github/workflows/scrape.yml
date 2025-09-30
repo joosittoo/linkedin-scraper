@@ -30,14 +30,19 @@ jobs:
         env:
           MAKE_WEBHOOK: ${{ secrets.MAKE_WEBHOOK }}
         run: |
+          echo "PING → MAKE_WEBHOOK"
           curl -s -o - -w "\nHTTP %{http_code}\n" -X POST "$MAKE_WEBHOOK" \
             -H "Content-Type: application/json" \
             -d '{"ping":"ok","source":"github-actions","note":"diagnostic"}'
 
-      - name: Run scraper
+      - name: Run scraper (unbuffered)
         env:
+          PYTHONUNBUFFERED: "1"
           LI_AT: ${{ secrets.LI_AT }}
           MAKE_WEBHOOK: ${{ secrets.MAKE_WEBHOOK }}
           LD_PROFILE_URL: ${{ secrets.LD_PROFILE_URL }}
           MAX_POSTS: ${{ secrets.MAX_POSTS }}
-        run: python scrape_and_post.py
+        run: |
+          echo "=== START SCRAPER ==="
+          python -u scrape_and_post.py
+          echo "=== END SCRAPER ==="
